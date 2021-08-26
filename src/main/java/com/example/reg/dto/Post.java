@@ -18,4 +18,27 @@ public class Post {
     private String postTitle;
     private String postContent;
     private String postImagePath;
+
+    public Long getPostNo() {
+        return postNo;
+    }
+
+    public String getPostContent() {
+        return postContent;
+    }
+
+    public String getPostImagePath() {
+        return postImagePath;
+    }
+
+    public String getPostTitle() {
+        return postTitle;
+    }
+
+    public Post (Long postNo, String postTitle, String postContent, String postImagePath) {
+        this.postNo = postNo;
+        this.postTitle = postTitle;
+        this.postContent = postContent;
+        this.postImagePath = postImagePath;
+    }
 }
