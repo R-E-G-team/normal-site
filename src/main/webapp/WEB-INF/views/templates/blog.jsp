@@ -36,10 +36,29 @@
                 $(location).attr('href', path);
             });
         });
+
+        var keys = [];
+        function on_key_down() {
+            keys[event.keyCode] = true;
+            if (keys[72] && keys[16] && keys[17]) { //H
+                location.replace('/templates/index');
+            } else if (keys[83] && keys[16] && keys[17]) { //s
+                location.replace('/templates/shop');
+            } else if (keys[66] && keys[16] && keys[17]) { //B
+                location.replace('/templates/blog');
+            } else if (keys[85] && keys[16] && keys[17]) { //u
+                location.replace('/templates/sign_up');
+            } else if (keys[73] && keys[16] && keys[17]) { //i
+                location.replace('/templates/sign_in');
+            }
+        }
+        function on_key_up() {
+            keys[event.keyCode] = false;
+        }
     </script>
 </head>
 
-<body>
+<body onkeydown='on_key_down()', onkeyup='on_key_up()'>
 <!-- Page Preloder -->
 <div id="preloder">
     <div class="loader"></div>
@@ -98,9 +117,9 @@
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="index">Home</a></li>
+                        <li><a href="index">Home</a></li>
                         <li><a href="shop">Shop</a></li>
-                        <li><a href="blog">Blog</a></li>
+                        <li class="active"><a href="blog">Blog</a></li>
                     </ul>
                 </nav>
             </div>
