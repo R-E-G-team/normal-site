@@ -99,19 +99,20 @@
 <!-- Contact Section Begin -->
 <section class="contact spad">
     <div class="col-lg-3 col-md-3" style="margin: 0 auto">
-        <h2>Sign In</h2>
+        <h2>Sign Up</h2>
         <br>
         <div class="contact__form">
-            <form action="#">
+            <form action="/sign_up_action" method="post">
                 <div class="row" style="margin: 0 auto">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <div class="col-lg-12">
-                        <input type="text" placeholder="Name">
+                        <input name="userName" type="text" placeholder="Name">
                     </div>
                     <div class="col-lg-12">
-                        <input type="text" placeholder="Email">
+                        <input name="userId" type="text" placeholder="Id">
                     </div>
                     <div class="col-lg-12">
-                        <input type="text" placeholder="Password">
+                        <input name="userPassword" type="password" placeholder="Password">
                     </div>
                     <div class="col-lg-12">
                         <input type="submit" value="Sign Up" style="background-color: #7abaff; color: white">

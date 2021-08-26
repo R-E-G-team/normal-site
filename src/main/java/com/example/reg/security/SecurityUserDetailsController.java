@@ -22,11 +22,8 @@ public class SecurityUserDetailsController {
     public void signUp() {}
 
     @RequestMapping("/sign_up_action")
-    public String signUpAction(String id, String password) {
-        Users users = new Users();
-        users.setUserId(id);
-        users.setUserPassword(password);
+    public String signUpAction(Users users) {
         securityUserDetailsService.insertUser(users);
-        return "sign_in";
+        return "/templates/sign_in";
     }
 }

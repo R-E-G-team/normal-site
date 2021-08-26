@@ -102,13 +102,14 @@
         <h2>Sign In</h2>
         <br>
         <div class="contact__form">
-            <form action="#">
+            <form action="/sign_in_action" method="post">
                 <div class="row" style="margin: 0 auto">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <div class="col-lg-12">
-                        <input type="text" placeholder="Email">
+                        <input name="id" type="text" placeholder="Email">
                     </div>
                     <div class="col-lg-12">
-                        <input type="text" placeholder="Password">
+                        <input name="password" type="text" placeholder="Password">
                     </div>
                     <div class="col-lg-12">
                         <a href="/templates/sign_up">New User? Create an account!</a>
