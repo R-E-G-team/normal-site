@@ -7,26 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/templates")
 public class TemplatesController {
 
-    @RequestMapping("/about")
-    public void about() {}
-
     @RequestMapping("/blog")
     public void blog() {}
 
     @RequestMapping("/blog_details")
     public void blogDetails() {}
 
-    @RequestMapping("/checkout")
-    public void checkout() {}
-
-    @RequestMapping("/contact")
-    public void contact() {}
-
     @RequestMapping("/index")
     public void index() {}
-
-    @RequestMapping("/main")
-    public void main() {}
 
     @RequestMapping("/shop")
     public void shop() {}
@@ -34,7 +22,13 @@ public class TemplatesController {
     @RequestMapping("/shop_details")
     public void shopDetails() {}
 
-    @RequestMapping("/shopping_cart")
-    public void shoppingCard() {}
+    @RequestMapping("/sign_in")
+    public void signIn() {}
+
+    @RequestMapping("/sign_up")
+    public void signUp() {}
+
+    @RequestMapping("/blog_write")
+    public void blogWrite() {}
 
 }

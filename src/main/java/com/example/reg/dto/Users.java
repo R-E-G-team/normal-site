@@ -1,4 +1,4 @@
-package com.example.reg.model;
+package com.example.reg.dto;
 
 import lombok.*;
 

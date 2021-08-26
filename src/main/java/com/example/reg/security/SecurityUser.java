@@ -1,6 +1,6 @@
 package com.example.reg.security;
 
-import com.example.reg.model.Users;
+import com.example.reg.dto.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

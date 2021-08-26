@@ -6,6 +6,5 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class InitialService {
-
+public class GoodsImageService {
 }

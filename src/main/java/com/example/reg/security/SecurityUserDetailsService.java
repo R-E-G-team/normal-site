@@ -1,7 +1,7 @@
 package com.example.reg.security;
 
-import com.example.reg.model.Users;
-import com.example.reg.repository.MemberRepository;
+import com.example.reg.dto.Users;
+import com.example.reg.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class SecurityUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private UsersRepository memberRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;

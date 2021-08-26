@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/main")
 public class InitialController {
 
     @RequestMapping("/index")
-    public void index(Model model) {
-    }
+    public void index(Model model) { }
+
+    @RequestMapping("sign_in")
+    public void signIn() {}
 
     @RequestMapping("/success")
     public void success() {}
