@@ -25,7 +25,7 @@ public class SecurityAuthenticationFailureHandler implements AuthenticationFailu
         this.id = "id";
         this.password = "password";
         this.exceptionMsg = "exceptionMsg";
-        this.defaultFailureUrl = "/sign_in";
+        this.defaultFailureUrl = "/templates/sign_in";
     }
 
     @Override
@@ -39,6 +39,7 @@ public class SecurityAuthenticationFailureHandler implements AuthenticationFailu
         request.setAttribute(id, loginid);
         request.setAttribute(password, loginpasswd);
         request.setAttribute(exceptionMsg, authenticationException.getMessage());
+        request.setAttribute("errorMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
         request.getRequestDispatcher(defaultFailureUrl).forward(request, response);
     }
 }

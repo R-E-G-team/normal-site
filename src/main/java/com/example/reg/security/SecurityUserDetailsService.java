@@ -35,6 +35,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = {Exception.class})
     public void insertUser(Users users) {
         users.setUserPassword(bCryptPasswordEncoder.encode(users.getUserPassword()));
+        users.setRoleName("ROLE_USER");
         memberRepository.save(users);
     }
 }

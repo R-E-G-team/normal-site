@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+
 <!DOCTYPE html>
 <html lang="zxx">
 
@@ -16,14 +18,14 @@
           rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
     <script>
         window.speechSynthesis.cancel();
     </script>
@@ -40,14 +42,13 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <a href="#">Sign in</a>
-            <a href="#">FAQs</a>
+            <a href="/templates/sign_in">Sign in</a>
         </div>
     </div>
     <div class="offcanvas__nav__option">
-        <a href="#" class="search-switch"><img src="/static/img/icon/search.png" alt=""></a>
-        <a href="#"><img src="/static/img/icon/heart.png" alt=""></a>
-        <a href="#"><img src="/static/img/icon/cart.png" alt=""> <span>0</span></a>
+        <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+        <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+        <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
         <div class="price">$0.00</div>
     </div>
     <div id="mobile-menu-wrap"></div>
@@ -63,8 +64,16 @@
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="#">Sign in</a>
-                            <a href="#">FAQs</a>
+                            <%
+                                if(SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+                            %>
+                            <a href="/templates/sign_in">Sign in</a>
+                            <%} else {%>
+                            <form action="/logout" method="post">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                <input type="submit" value="Sign Out">
+                            </form>
+                            <%}%>
                         </div>
                     </div>
                 </div>
@@ -75,52 +84,45 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="index"><img src="/static/img/logo.png" style="height: 30px" alt=""></a>
+                    <a href="index"><img src="/img/logo.png" style="height: 30px" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="index">Home</a></li>
-                        <li class="active"><a href="shop">Shop</a></li>
+                        <li class="active"><a href="index">Home</a></li>
+                        <li><a href="shop">Shop</a></li>
                         <li><a href="blog">Blog</a></li>
                     </ul>
                 </nav>
-            </div>
-            <div class="col-lg-3 col-md-3">
-                <div class="header__nav__option">
-                    <a href="#" class="search-switch"><img src="/static/img/icon/search.png" alt=""></a>
-                    <a href="#"><img src="/static/img/icon/heart.png" alt=""></a>
-                    <a href="#"><img src="/static/img/icon/cart.png" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
-                </div>
             </div>
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
 </header>
+<!-- Header Section End -->
 <!-- Checkout Section Begin -->
 <section class="checkout spad">
     <div class="container">
         <div class="checkout__form">
-            <form action="#">
+            <form action="/post_insert?${_csrf.parameterName}=${_csrf.token}" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-lg-12 col-md-8">
                         <div class="col-lg-6">
                             <label for="formFile" class="form-label">Image File</label>
-                            <input class="form-control" type="file" id="formFile">
+                            <input name="file" multiple="multiple" class="form-control" type="file" id="formFile">
                         </div>
                         <br>
                         <div class="col-lg-12">
                             <div class="checkout__input">
                                 <p>Title<span>*</span></p>
-                                <input class="form-control" type="text">
+                                <input name="postTitle" class="form-control" type="text">
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="checkout__input">
                                 <p>Content<span>*</span></p>
-                                <textarea class="form-control" rows="3"></textarea>
+                                <textarea name="postContent" class="form-control" rows="3"></textarea>
                             </div>
                         </div>
                         <br>
@@ -139,15 +141,15 @@
 <!-- Checkout Section End -->
 <!-- Contact Section End -->
 <!-- Header Section End -->
-<script src="/static/js/jquery-3.3.1.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/jquery.nice-select.min.js"></script>
-<script src="/static/js/jquery.nicescroll.min.js"></script>
-<script src="/static/js/jquery.magnific-popup.min.js"></script>
-<script src="/static/js/jquery.countdown.min.js"></script>
-<script src="/static/js/jquery.slicknav.js"></script>
-<script src="/static/js/mixitup.min.js"></script>
-<script src="/static/js/owl.carousel.min.js"></script>
-<script src="/static/js/main.js"></script>
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery.nicescroll.min.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/jquery.countdown.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/main.js"></script>
 </body>
 </html>

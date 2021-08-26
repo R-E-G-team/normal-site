@@ -1,5 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.example.reg.dto.Goods" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -17,25 +19,25 @@
           rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
     <script>
         window.speechSynthesis.cancel();
     </script>
-    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
     <script>
         $(function() {
             $(document).on("click", ".speech", function(event) { //버튼을 클릭 했을시 popupOpen 함수 출력
-                let filePath = $(this).attr('data-setbg');
+                let goodsNo = $(this).attr('name');
                 $.ajax({
                     url: "/component_to_speech",
-                    data: {"filePath" : filePath},
+                    data: {"goodsNo" : goodsNo},
                     type: "get",
                     success: function (result) {
                         window.speechSynthesis.cancel();
@@ -62,7 +64,7 @@
                 });
             });
             $(document).on("click", ".color", function(event) { //버튼을 클릭 했을시 popupOpen 함수 출력
-                let path = "/what_color?filePath=" + $(this).attr('datasrc');
+                let path = "/what_color?goodsNo=" + $(this).attr('name');
                 let win = window.open(path, "PopupWin", "width=" + screen.width + ",height=" + screen.height);
             });
         });
@@ -80,14 +82,13 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <a href="#">Sign in</a>
-            <a href="#">FAQs</a>
+            <a href="/templates/sign_in">Sign in</a>
         </div>
     </div>
     <div class="offcanvas__nav__option">
-        <a href="#" class="search-switch"><img src="/static/img/icon/search.png" alt=""></a>
-        <a href="#"><img src="/static/img/icon/heart.png" alt=""></a>
-        <a href="#"><img src="/static/img/icon/cart.png" alt=""> <span>0</span></a>
+        <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+        <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+        <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
         <div class="price">$0.00</div>
     </div>
     <div id="mobile-menu-wrap"></div>
@@ -103,8 +104,16 @@
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="#">Sign in</a>
-                            <a href="#">FAQs</a>
+                            <%
+                                if(SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+                            %>
+                            <a href="/templates/sign_in">Sign in</a>
+                            <%} else {%>
+                            <form action="/logout" method="post">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                <input type="submit" value="Sign Out">
+                            </form>
+                            <%}%>
                         </div>
                     </div>
                 </div>
@@ -115,25 +124,17 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="index"><img src="/static/img/logo.png" style="height: 30px" alt=""></a>
+                    <a href="index"><img src="/img/logo.png" style="height: 30px" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="index">Home</a></li>
-                        <li class="active"><a href="shop">Shop</a></li>
+                        <li class="active"><a href="index">Home</a></li>
+                        <li><a href="shop">Shop</a></li>
                         <li><a href="blog">Blog</a></li>
                     </ul>
                 </nav>
-            </div>
-            <div class="col-lg-3 col-md-3">
-                <div class="header__nav__option">
-                    <a href="#" class="search-switch"><img src="/static/img/icon/search.png" alt=""></a>
-                    <a href="#"><img src="/static/img/icon/heart.png" alt=""></a>
-                    <a href="#"><img src="/static/img/icon/cart.png" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
-                </div>
             </div>
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
@@ -353,14 +354,14 @@
                     %>
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="product__item">
-                                <div class="product__item__pic set-bg speech" data-setbg="/static/upload/<%=goods.get(i).getGoodsImagePath()%>">
+                                <div class="product__item__pic set-bg speech" name="<%=goods.get(i).getGoodsNo()%>" data-setbg="/resources/<%=goods.get(i).getGoodsImagePath()%>">
                                 </div>
                                 <div class="product__item__text">
                                     <h6><%=goods.get(i).getGoodsTitle()%></h6>
                                     <a href="/templates/shop_details?goodsNo=<%=goods.get(i).getGoodsNo()%>" class="add-cart">Go to details</a>
                                     <h5>$<%=goods.get(i).getGoodsPrice()%></h5>
                                     <div class="product__color__select">
-                                        <input style="color: blue" class="color" type="radio" id="pc-5" datasrc="/static/upload/<%=goods.get(i).getGoodsImagePath()%>">
+                                        <input style="color: blue" class="color" type="radio" id="pc-5" name="<%=goods.get(i).getGoodsNo()%>" datasrc="/resources/<%=goods.get(i).getGoodsImagePath()%>">
                                     </div>
                                 </div>
                             </div>
@@ -391,10 +392,10 @@
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="/static/img/footer-logo.png" alt=""></a>
+                        <a href="#"><img src="/img/footer-logo.png" alt=""></a>
                     </div>
                     <p>The customer is at the heart of our unique business model, which includes design.</p>
-                    <a href="#"><img src="/static/img/payment.png" alt=""></a>
+                    <a href="#"><img src="/img/payment.png" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
@@ -465,15 +466,15 @@
 <!-- Search End -->
 
 <!-- Js Plugins -->
-<script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/jquery.nice-select.min.js"></script>
-<script src="/static/js/jquery.nicescroll.min.js"></script>
-<script src="/static/js/jquery.magnific-popup.min.js"></script>
-<script src="/static/js/jquery.countdown.min.js"></script>
-<script src="/static/js/jquery.slicknav.js"></script>
-<script src="/static/js/mixitup.min.js"></script>
-<script src="/static/js/owl.carousel.min.js"></script>
-<script src="/static/js/main.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.nice-select.min.js"></script>
+<script src="/js/jquery.nicescroll.min.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/jquery.countdown.min.js"></script>
+<script src="/js/jquery.slicknav.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/main.js"></script>
 </body>
 
 </html>

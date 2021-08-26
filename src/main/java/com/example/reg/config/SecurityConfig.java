@@ -29,9 +29,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.formLogin()
                 .loginPage("/sign_in")
+                .loginProcessingUrl("/sign_in_action")
                 .usernameParameter("id").passwordParameter("password")
-                .successHandler(securityAuthenticationSuccessHandler.setDefaultUrl("/"))
+                .successHandler(securityAuthenticationSuccessHandler.setDefaultUrl("/templates/index"))
                 .failureHandler(securityAuthenticationFailureHandler).and();
+
+        http.logout()
+                .logoutSuccessUrl("/templates/index")
+                .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .and();
 
         http.exceptionHandling()
                 .accessDeniedHandler(securityAccessDeniedHandler)

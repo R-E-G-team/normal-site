@@ -15,6 +15,7 @@ repositories {
 dependencies {
     implementation 'com.google.cloud:google-cloud-vision:1.68.0'
     implementation 'org.springframework.boot:spring-boot-starter:2.5.4'
+    implementation 'org.apache.tika:tika-core:1.25'
 
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.52'
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'

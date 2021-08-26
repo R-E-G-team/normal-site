@@ -1,6 +1,7 @@
 <%@ page import="com.example.reg.dto.Post" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="com.example.reg.dto.Users" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -31,11 +32,17 @@
     <script>
         window.speechSynthesis.cancel();
         $(function() {
-            $(document).on("click", ".write", function (event) {
-                let path = "/templates/write_form";
-                $(location).attr('href', path);
+            $(document).on("click", "#modify", function(event) { //버튼을 클릭 했을시 popupOpen 함수 출력
+                popupOpen($(this).val());
             });
-        });
+        })
+        function popupOpen(val) {
+            let url = "${pageContext.request.contextPath}/main/modify?usersNo=" + val;
+            let winWidth = 700;
+            let winHeight = 600;
+            let popupOption = "width=" + winWidth + ", height=" + winHeight; //팝업창 옵션(optoin)
+            let myWindow = window.open(url, "회원 정보 수정", popupOption);
+        }
     </script>
 </head>
 
@@ -111,47 +118,44 @@
 <!-- Header Section End -->
 
 <!-- Breadcrumb Section Begin -->
-<section class="breadcrumb-blog set-bg" data-setbg="/img/breadcrumb-bg.jpg">
+<section class="breadcrumb-blog set-bg" data-setbg="/img/admin.jpeg">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12">
-                <h2>Our Blog</h2>
-            </div>
         </div>
     </div>
 </section>
 <!-- Breadcrumb Section End -->
-
-
-<!-- Blog Section Begin -->
-<section class="blog spad">
-    <div class="container">
-        <%
-            if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
-        %>
-        <button class="btn btn-primary write">WRITE POST</button><br><br>
-        <%}%>
-        <div class="row">
+<div class="card-block table-border-style" style="margin: 0 100px">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>No</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Role</th>
+            </tr>
+            </thead>
+            <tbody>
             <%
-                List<Post> postList = (List<Post>) request.getAttribute("postList");
-                for (int i = 0; i < postList.size(); i++) {
+                List<Users> users = (List<Users>) request.getAttribute("users");
+                for(int i = 0; i < users.size(); i++) {
             %>
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="blog__item">
-                    <div class="blog__item__pic set-bg"
-                         data-setbg="${pageContext.request.contextPath}/resources/<%=postList.get(i).getPostImagePath()%>"></div>
-                    <div class="blog__item__text">
-                        <h5><%=postList.get(i).getPostTitle()%></h5>
-                        <a href="/templates/blog_details?postNo=<%=postList.get(i).getPostNo()%>">더 알아보기.</a>
-                    </div>
-                </div>
-            </div>
+                <tr>
+                    <th scope="row"><%=users.get(i).getUserNo()%></th>
+                    <td><%=users.get(i).getUserId()%></td>
+                    <td><%=users.get(i).getUserName()%></td>
+                    <td><%=users.get(i).getRoleName()%></td>
+                    <td>
+                        <button class="btn btn-default" style="margin-right: 5px"
+                                id="modify" value="<%=users.get(i).getUserNo()%>">수정</button>
+                    </td>
+                </tr>
             <%}%>
-        </div>
+            </tbody>
+        </table>
     </div>
-</section>
-<!-- Blog Section End -->
-
+</div>
 <!-- Footer Section Begin -->
 <footer class="footer">
     <div class="container">

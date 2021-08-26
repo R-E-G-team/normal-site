@@ -14,20 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/templates")
 public class TemplatesController {
 
-    @RequestMapping("/blog")
-    public void blog() {}
-
     @Autowired
     private PostService postService;
-
-    @RequestMapping("/blog_details")
-    public String blogDetails(Model model, HttpServletRequest request) {
-//        Long postId = Long.getLong(request.getParameter("postId"));
-        model.addAttribute("post", postService.loadPostByPostId(1L));
-//        Post post = new Post(1L, "ttiles", "adfasdf", "/static/img/blog/details/blog-details.jpg");
-//        model.addAttribute("post", post);
-        return "/templates/blog_details";
-    }
 
     @RequestMapping("/index")
     public void index() {}

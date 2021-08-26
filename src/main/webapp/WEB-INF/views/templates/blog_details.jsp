@@ -1,4 +1,6 @@
 <%@ page import="com.example.reg.dto.Post" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%
@@ -20,16 +22,23 @@
           rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    <script src="/js/jquery-3.3.1.min.js"></script>
     <script>
         window.speechSynthesis.cancel();
+        $(function() {
+            $(document).on("click", ".img", function(event) { //버튼을 클릭 했을시 popupOpen 함수 출력
+                let path = "/text_to_braille?postNo=" + $(this).attr('name');
+                let win = window.open(path, "PopupWin", "width=2000,height=1000");
+            });
+        });
     </script>
 </head>
 
@@ -44,14 +53,13 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <a href="#">Sign in</a>
-            <a href="#">FAQs</a>
+            <a href="/templates/sign_in">Sign in</a>
         </div>
     </div>
     <div class="offcanvas__nav__option">
-        <a href="#" class="search-switch"><img src="/static/img/icon/search.png" alt=""></a>
-        <a href="#"><img src="/static/img/icon/heart.png" alt=""></a>
-        <a href="#"><img src="/static/img/icon/cart.png" alt=""> <span>0</span></a>
+        <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+        <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+        <a href="#"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
         <div class="price">$0.00</div>
     </div>
     <div id="mobile-menu-wrap"></div>
@@ -67,8 +75,16 @@
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="#">Sign in</a>
-                            <a href="#">FAQs</a>
+                            <%
+                                if(SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+                            %>
+                            <a href="/templates/sign_in">Sign in</a>
+                            <%} else {%>
+                            <form action="/logout" method="post">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                <input type="submit" value="Sign Out">
+                            </form>
+                            <%}%>
                         </div>
                     </div>
                 </div>
@@ -79,30 +95,23 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="index"><img src="/static/img/logo.png" style="height: 30px" alt=""></a>
+                    <a href="index"><img src="/img/logo.png" style="height: 30px" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li><a href="index">Home</a></li>
+                        <li class="active"><a href="index">Home</a></li>
                         <li><a href="shop">Shop</a></li>
-                        <li class="active"><a href="blog">Blog</a></li>
+                        <li><a href="blog">Blog</a></li>
                     </ul>
                 </nav>
-            </div>
-            <div class="col-lg-3 col-md-3">
-                <div class="header__nav__option">
-                    <a href="#" class="search-switch"><img src="/static/img/icon/search.png" alt=""></a>
-                    <a href="#"><img src="/static/img/icon/heart.png" alt=""></a>
-                    <a href="#"><img src="/static/img/icon/cart.png" alt=""> <span>0</span></a>
-                    <div class="price">$0.00</div>
-                </div>
             </div>
         </div>
         <div class="canvas__open"><i class="fa fa-bars"></i></div>
     </div>
 </header>
+<!-- Header Section End -->
 <!-- Header Section End -->
 
     <!-- Blog Details Hero Begin -->
@@ -130,7 +139,7 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-12">
                     <div class="blog__details__pic">
-                        <img src="<%=post.getPostImagePath()%>" alt="">
+                        <img class="img" name="<%=post.getPostNo()%>" src="/resources/<%=post.getPostImagePath()%>" alt="">
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -145,38 +154,15 @@
                             </ul>
                         </div>
                         <div class="blog__details__text">
+                            <a href="/download?filename=<%=post.getPostImagePath()%>">사진 다운로드</a>
                             <p><%=post.getPostContent()%></p>
-<%--                            <p>Hydroderm is the highly desired anti-aging cream on the block. This serum restricts the--%>
-<%--                                occurrence of early aging sings on the skin and keeps the skin younger, tighter and--%>
-<%--                                healthier. It reduces the wrinkles and loosening of skin. This cream nourishes the skin--%>
-<%--                                and brings back the glow that had lost in the run of hectic years.</p>--%>
-<%--                            <p>The most essential ingredient that makes hydroderm so effective is Vyo-Serum, which is a--%>
-<%--                                product of natural selected proteins. This concentrate works actively in bringing about--%>
-<%--                                the natural youthful glow of the skin. It tightens the skin along with its moisturizing--%>
-<%--                                effect on the skin. The other important ingredient, making hydroderm so effective is--%>
-<%--                                “marine collagen” which along with Vyo-Serum helps revitalize the skin.</p>--%>
-<%--                        </div>--%>
-<%--                        <div class="blog__details__quote">--%>
-<%--                            <i class="fa fa-quote-left"></i>--%>
-<%--                            <p>“When designing an advertisement for a particular product many things should be--%>
-<%--                                researched like where it should be displayed.”</p>--%>
-<%--                            <h6>_ John Smith _</h6>--%>
-<%--                        </div>--%>
-<%--                        <div class="blog__details__text">--%>
-<%--                            <p>Vyo-Serum along with tightening the skin also reduces the fine lines indicating aging of--%>
-<%--                                skin. Problems like dark circles, puffiness, and crow’s feet can be control from the--%>
-<%--                                strong effects of this serum.</p>--%>
-<%--                            <p>Hydroderm is a multi-functional product that helps in reducing the cellulite and giving--%>
-<%--                                the body a toned shape, also helps in cleansing the skin from the root and not letting--%>
-<%--                                the pores clog, nevertheless also let’s sweeps out the wrinkles and all signs of aging--%>
-<%--                                from the sensitive near the eyes.</p>--%>
                         </div>
                         <div class="blog__details__option">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="blog__details__author">
                                         <div class="blog__details__author__pic">
-                                            <img src="/static/img/blog/details/blog-author.jpg" alt="">
+                                            <img src="/img/blog/details/blog-author.jpg" alt="">
                                         </div>
                                         <div class="blog__details__author__text">
                                             <h5>Aiden Blair</h5>
@@ -242,10 +228,10 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="/static/img/footer-logo.png" alt=""></a>
+                            <a href="#"><img src="/img/footer-logo.png" alt=""></a>
                         </div>
                         <p>The customer is at the heart of our unique business model, which includes design.</p>
-                        <a href="#"><img src="/static/img/payment.png" alt=""></a>
+                        <a href="#"><img src="/img/payment.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
@@ -314,16 +300,16 @@
     <!-- Search End -->
 
     <!-- Js Plugins -->
-    <script src="/static/js/jquery-3.3.1.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/jquery.nice-select.min.js"></script>
-    <script src="/static/js/jquery.nicescroll.min.js"></script>
-    <script src="/static/js/jquery.magnific-popup.min.js"></script>
-    <script src="/static/js/jquery.countdown.min.js"></script>
-    <script src="/static/js/jquery.slicknav.js"></script>
-    <script src="/static/js/mixitup.min.js"></script>
-    <script src="/static/js/owl.carousel.min.js"></script>
-    <script src="/static/js/main.js"></script>
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.nicescroll.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
 </body>
 
 </html>

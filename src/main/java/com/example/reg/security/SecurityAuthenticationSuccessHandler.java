@@ -25,8 +25,7 @@ public class SecurityAuthenticationSuccessHandler implements AuthenticationSucce
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     public SecurityAuthenticationSuccessHandler() {
-        targetUrlParameter = "";
-        defaultUrl = "/";
+        defaultUrl = "/templates/index";
     }
 
     public String getTargetUrlParameter() {
@@ -52,15 +51,7 @@ public class SecurityAuthenticationSuccessHandler implements AuthenticationSucce
                                         Authentication authentication) throws IOException {
 
         clearAuthenticationAttributes(request);
-
-        if (!"".equals(targetUrlParameter)) {
-            String targetUrl = request.getParameter(targetUrlParameter);
-            if (StringUtils.hasText(targetUrl)) {
-                useTargetUrl(request, response);
-            }
-        } else {
-            useDefaultUrl(request, response);
-        }
+        useDefaultUrl(request, response);
     }
 
     private void clearAuthenticationAttributes(HttpServletRequest request) {
@@ -69,15 +60,6 @@ public class SecurityAuthenticationSuccessHandler implements AuthenticationSucce
             return;
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
-    }
-
-    private void useTargetUrl(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        SavedRequest savedRequest = requestCache.getRequest(request, response);
-        if (savedRequest != null) {
-            requestCache.removeRequest(request, response);
-        }
-        String targetUrl = request.getParameter(targetUrlParameter);
-        redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
     private void useDefaultUrl(HttpServletRequest request, HttpServletResponse response) throws IOException {
