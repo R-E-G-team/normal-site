@@ -9,18 +9,6 @@ import java.io.IOException;
 import java.util.*;
 
 public class DetectText {
-    private List<String> text;
-    private List<String> coordinate;
-
-    public DetectText() {
-        text = new ArrayList<>();
-        coordinate = new ArrayList<>();
-    }
-
-    public static Map<String, int[]> detectText() throws IOException {
-        String filePath = "/Users/oueya/Downloads/test.png";
-        return detectText(filePath);
-    }
 
     public static Map<String, int[]> detectText(String filePath) throws IOException {
         List<AnnotateImageRequest> requests = new ArrayList<>();

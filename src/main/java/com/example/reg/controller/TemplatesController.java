@@ -16,12 +16,6 @@ public class TemplatesController {
     @RequestMapping("/index")
     public void index() {}
 
-    @RequestMapping("/shop")
-    public void shop() {}
-
-    @RequestMapping("/shop_details")
-    public void shopDetails() {}
-
     @RequestMapping("/sign_in")
     public void signIn() {}
 

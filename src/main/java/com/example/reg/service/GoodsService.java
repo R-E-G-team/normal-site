@@ -1,10 +1,11 @@
 package com.example.reg.service;
 
-import org.springframework.stereotype.Service;
+import com.example.reg.dto.Goods;
 
-import javax.transaction.Transactional;
+import java.util.List;
 
-@Service
-@Transactional
-public class GoodsService {
+public interface GoodsService {
+    List<Goods> getGoodsList();
+
+    Goods getGoods(Long goodsNo);
 }

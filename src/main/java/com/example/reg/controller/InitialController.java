@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -20,7 +22,11 @@ public class InitialController {
     private UsersRepository usersRepository;
 
     @RequestMapping("/index")
-    public void index(Model model) {}
+    public void index(HttpSession session, Model model) {
+        ServletContext application = session.getServletContext();
+        String path = application.getRealPath("/resources");
+        System.out.println(path);
+    }
 
     @RequestMapping("sign_in")
     public void signIn() {}
@@ -43,4 +49,9 @@ public class InitialController {
 
     @RequestMapping("testb")
     public void testb() {}
+
+    @RequestMapping("/hi")
+    public String ttest() {
+        return "hi";
+    }
 }

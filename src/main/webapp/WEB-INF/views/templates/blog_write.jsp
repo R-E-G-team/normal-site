@@ -24,6 +24,9 @@
     <link rel="stylesheet" href="/static/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="/static/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+    <script>
+        window.speechSynthesis.cancel();
+    </script>
 </head>
 
 <body>

@@ -79,7 +79,7 @@
     $(function() {
         $(document).on("click", ".img3", function(event) { //버튼을 클릭 했을시 popupOpen 함수 출력
             let path = "/text_to_braille?filePath=" + $(this).attr('src');
-            let win = window.open(path, "PopupWin", "width=500,height=500");
+            let win = window.open(path, "PopupWin", "width=" + screen.width + ",height=" + screen.height);
         });
     });
 </script>

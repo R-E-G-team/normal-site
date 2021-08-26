@@ -1,17 +1,17 @@
 package com.example.reg.controller;
 
 import com.example.reg.util.DetectLabels;
+import com.example.reg.util.DetectProperties;
 import com.example.reg.util.DetectText;
+import com.example.reg.util.DetectTextSpeech;
+import com.google.type.Color;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class ImageRestController {
@@ -21,17 +21,13 @@ public class ImageRestController {
         String path = System.getProperty("user.dir");
         path += "/src/main/resources";
         path += filePath;
-        Map<String, int[]> map = new LinkedHashMap<>();
+        String text = "";
         try {
-            map = DetectText.detectText(path);
+            text = DetectTextSpeech.detectTextSpeech(path);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        model.addAttribute("map", map);
-        Map.Entry entry = map.entrySet().iterator().next();
-        String key = (String) entry.getKey();
-        model.addAttribute("info", key);
-        return key;
+        return text;
     }
 
     @RequestMapping("/component_to_speech")
@@ -45,7 +41,6 @@ public class ImageRestController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        model.addAttribute("list", list);
         return list;
     }
 }
