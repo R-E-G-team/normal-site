@@ -120,7 +120,6 @@
 <!-- Contact Section Begin -->
 <section class="contact spad">
     <div class="col-lg-3 col-md-3" style="margin: 0 auto">
-        <div style="color: red"><%=request.getAttribute("errorMsg")%></div>
         <h2>Sign Up</h2>
         <br>
         <div class="contact__form">

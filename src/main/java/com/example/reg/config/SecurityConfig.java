@@ -24,11 +24,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests()
-                .anyRequest().permitAll().and();
+//        http.authorizeRequests()
+//                .antMatchers("/templates/admin").hasAnyRole("ADMIN")
+//                .antMatchers("/main/modify").hasAnyRole("ADMIN")
+//                .antMatchers("/templates/write_form").authenticated()
+//                .antMatchers("**/**").permitAll().and();
 
         http.formLogin()
-                .loginPage("/sign_in")
+                .loginPage("/templates/sign_in")
                 .loginProcessingUrl("/sign_in_action")
                 .usernameParameter("id").passwordParameter("password")
                 .successHandler(securityAuthenticationSuccessHandler.setDefaultUrl("/templates/index"))

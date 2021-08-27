@@ -81,12 +81,12 @@
                     <div class="header__top__right">
                         <div class="header__top__links">
                             <%
-                                if(SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+                                if (SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
                             %>
                             <a href="/templates/sign_in">Sign in</a>
                             <%} else {%>
                             <form action="/logout" method="post">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <input type="submit" value="Sign Out">
                             </form>
                             <%}%>
@@ -119,13 +119,20 @@
 <!-- Header Section End -->
 <section class="contact spad">
     <div class="col-lg-3 col-md-3" style="margin: 0 auto">
-        <div style="color: red"><%=request.getAttribute("errorMsg")%></div>
+        <div style="color: red">
+            <%
+                String error = (String) request.getAttribute("errorMsg");
+                if(error!=null) {
+            %>
+            <%=error%>
+            <%}%>
+        </div>
         <h2>Sign In</h2>
         <br>
         <div class="contact__form">
             <form action="/sign_in_action" method="post">
                 <div class="row" style="margin: 0 auto">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="col-lg-12">
                         <input name="id" type="text" placeholder="Id">
                     </div>
@@ -199,9 +206,11 @@
                     <p>Copyright ©
                         <script>
                             document.write(new Date().getFullYear());
-                        </script>2020
+                        </script>
+                        2020
                         All rights reserved | This template is made with <i class="fa fa-heart-o"
-                                                                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                                                            aria-hidden="true"></i> by <a
+                                href="https://colorlib.com" target="_blank">Colorlib</a>
                     </p>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </div>

@@ -102,7 +102,7 @@
 </header>
 <!-- Header Section End -->
 
-<h1 style="margin: 0 auto">입장 권한이 없습니다. 로그인 하시거나 고객센터에 문의하십시오.</h1>
+<h1 style="margin: 0 auto">다운로드 실패</h1>
 
 <script src="/js/jquery-3.3.1.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>

@@ -19,7 +19,7 @@ public class SecurityAccessDeniedHandler implements AccessDeniedHandler {
     private String defaultUrl;
 
     public SecurityAccessDeniedHandler() {
-        this.defaultUrl = "/exception";
+        this.defaultUrl = "/exceptions";
     }
 
     @Override

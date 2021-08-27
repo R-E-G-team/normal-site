@@ -19,7 +19,7 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
     private String defaultUrl;
 
     public SecurityAuthenticationEntryPoint() {
-        this.defaultUrl = "/exception";
+        this.defaultUrl = "/exceptions";
     }
 
     @Override
