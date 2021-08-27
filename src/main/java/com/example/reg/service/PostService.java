@@ -1,14 +1,14 @@
 package com.example.reg.service;
 
 import com.example.reg.dto.Post;
-import com.example.reg.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.sql.SQLTransientException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional

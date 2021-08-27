@@ -2,33 +2,25 @@ package com.example.reg.controller;
 
 import com.example.reg.dto.Post;
 import com.example.reg.service.PostService;
-import org.apache.tika.Tika;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
 public class PostController {
+
+    private static final Logger logger = LogManager.getLogger(PostController.class);
 
     @Autowired
     private PostService postService;
@@ -43,9 +35,15 @@ public class PostController {
     }
 
     @RequestMapping("/templates/blog_details")
-    public void blogDetails(Model model, HttpServletRequest request) {
+    public String blogDetails(Model model, HttpServletRequest request) {
         Long postNo = Long.parseLong(request.getParameter("postNo"));
-        model.addAttribute("post", postService.loadPostByPostId(postNo));
+        Post post = postService.loadPostByPostId(postNo);
+        if(post==null){
+            logger.error("Entered non-existent value");
+            return "redirect:/templates/blog";
+        }
+        model.addAttribute("post", post);
+        return "/templates/blog_details";
     }
 
     @RequestMapping("/templates/write_form")
@@ -59,7 +57,7 @@ public class PostController {
         try {
             postService.postInsert(session, post);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return "redirect:/templates/blog";
     }
@@ -119,6 +117,7 @@ public class PostController {
 
 
         } catch (Exception e) {
+            logger.error(e);
             return false; //에러가 나면 false값 리턴
         }
 

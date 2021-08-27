@@ -2,7 +2,6 @@ package com.example.reg.service;
 
 import com.example.reg.dto.Post;
 import com.example.reg.repository.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,8 +24,7 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public Post loadPostByPostId(Long id) {
-        Post post = postRepository.getById(id);
-        return post;
+        return postRepository.findById(id).orElse(null);
     }
 
     @Override
